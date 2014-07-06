@@ -169,6 +169,7 @@ namespace DG.Tween.Core
             if (t.loops == -1) return false;
             if (t.elapsed < t.fullDuration) {
                 t.Goto(t.fullDuration);
+                t.isPlaying = false;
                 // Despawn if needed
                 if (t.autoKill) Despawn(t, modifyActiveLists);
                 return true;
