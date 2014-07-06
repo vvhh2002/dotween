@@ -148,10 +148,8 @@ namespace DG.Tween
             if (t.elapsed > 0 || prevElapsed > 0) {
                 // Startup
                 if (!t.startupDone) Startup(t);
-                // Elapsed + position
+                // Elapsed
                 if (t.elapsed > t.fullDuration) t.elapsed = t.fullDuration;
-                t.position = (t.elapsed > t.duration) ? t.elapsed % t.duration : t.elapsed;
-                if (t.position <= 0 && t.elapsed > 0) t.position = t.duration; // Makes position 0 equal to position "end" when looping
                 // Check if it will be complete
                 t.isComplete = t.elapsed >= t.fullDuration;
                 // Loops - takes care of floating points imprecision, to avoid things like "2/2 = 0.99999" from happening
@@ -164,9 +162,12 @@ namespace DG.Tween
                     else t.completedLoops = ceil - 1;
                 }
                 if (t.completedLoops > prevCompletedLoops) newCompletedSteps = t.completedLoops - prevCompletedLoops;
+                // Position
+                t.position = (t.elapsed > t.duration) ? t.elapsed % t.duration : t.elapsed;
+                if (t.position <= 0 && t.elapsed > 0) t.position = t.duration; // Makes position 0 equal to position "end" when looping
                 // Get values from plugin and set them
                 float easePosition = t.position; // Changes in case we're yoyoing backwards
-                if (t.loopType == LoopType.Yoyo && !t.isComplete ? t.completedLoops % 2 != 0 : t.completedLoops % 2 == 0) {
+                if (t.loopType == LoopType.Yoyo && (!t.isComplete ? t.completedLoops % 2 != 0 : t.completedLoops % 2 == 0)) {
                     // Behaves differently in case the tween is complete or not,
                     // in order to make position 0 equal to position "end"
                     easePosition = t.duration - t.position;
