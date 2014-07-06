@@ -48,5 +48,10 @@ namespace DG.Tween
         {
             TweenManager.Rewind(t);
         }
+
+        public static int CompletedLoops(this Tween t)
+        {
+            return t.completedLoops;
+        }
     }
 }
