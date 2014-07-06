@@ -123,6 +123,7 @@ namespace DG.Tween
         static bool DoGoto(Tweener<T> t, float to)
         {
             // TODO Prevent any action if we determine that the tween should end as rewinded/complete and it's already in such a state
+            // FIXME problems (behaves like if timeScale was ridiculously low and also stutters) after thousands of completed loops
 
             // Lock creation extensions
             t.creationLocked = true;
@@ -131,7 +132,7 @@ namespace DG.Tween
             t.elapsed = to;
             if (t.elapsed < 0) t.elapsed = 0;
             bool wasComplete = t.isComplete;
-            bool wasDelayComplete = t.delayComplete;
+            bool wasDelayComplete = t.delayComplete; // Stored for an eventual onDelayComplete callback
             int newCompletedSteps = 0;
 
             // Delay
